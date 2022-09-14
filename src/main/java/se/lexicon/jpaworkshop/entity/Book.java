@@ -2,6 +2,7 @@ package se.lexicon.jpaworkshop.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -19,6 +20,8 @@ public class Book {
     @Column(nullable = false)
     private int maxLoanDays;
 
+    @ManyToMany
+    private Set<Author> authors;
 
     public Book() {
     }
@@ -34,6 +37,14 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     public int getBookId() {
