@@ -1,4 +1,4 @@
-package entity;
+package se.lexicon.jpaworkshop.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;

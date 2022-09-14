@@ -1,6 +1,4 @@
-package entity;
-
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+package se.lexicon.jpaworkshop.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,15 +13,15 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int appUserId;
 
-    @Column(length = 250 ,nullable = false)
+    @Column(length = 250, nullable = false)
     private String userName;
     @Column(length = 150, nullable = false)
     private String password;
     @Column(nullable = false)
     private LocalDate regDate;
 
-    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
-   @JoinColumn(name = "details_Id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "details_Id")
     private Details userDetails;
 
     public AppUser() {

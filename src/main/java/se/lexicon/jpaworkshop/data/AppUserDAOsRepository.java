@@ -1,6 +1,6 @@
-package data;
+package se.lexicon.jpaworkshop.data;
 
-import entity.AppUser;
+import se.lexicon.jpaworkshop.entity.AppUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
