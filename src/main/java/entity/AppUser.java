@@ -22,9 +22,12 @@ public class AppUser {
     @Column(nullable = false)
     private LocalDate regDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detailsId")
+    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+   @JoinColumn(name = "details_Id")
     private Details userDetails;
+
+    public AppUser() {
+    }
 
     public AppUser(int appUserId, String userName, String password, LocalDate regDate, Details userDetails) {
         this.appUserId = appUserId;
@@ -39,9 +42,6 @@ public class AppUser {
         this.password = password;
         this.regDate = regDate;
         this.userDetails = userDetails;
-    }
-
-    public AppUser() {
     }
 
     public int getAppUserId() {

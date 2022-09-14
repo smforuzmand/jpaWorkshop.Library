@@ -20,6 +20,10 @@ public class Details {
 
     @Column(nullable = false)
     private LocalDate birthDate;
+//
+//    @OneToOne()
+//    private AppUser appUser;
+
 
     public Details(int detailsId, String email, String name, LocalDate birthDate) {
         this.detailsId = detailsId;
