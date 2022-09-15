@@ -18,8 +18,11 @@ public class Author {
     private String firstName;
     @Column(length = 255, nullable = false)
     private String lastName;
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors" , cascade = CascadeType.ALL)
     private Set<Book> writtenBooks;
+
+
+    // add two method add and remove
 
 
     public Author(String firstName, String lastName, Set<Book> writtenBooks) {
@@ -31,6 +34,20 @@ public class Author {
     public Author() {
 
     }
+
+
+    public void addBook(Book book) {
+        writtenBooks.add(book);
+        book.getAuthors().add(this);
+    }
+
+    public void removeBook(Book book) {
+        book.getAuthors().remove(this);
+        writtenBooks.remove(book);
+        }
+
+
+
 
     public int getAuthorId() {
         return authorId;

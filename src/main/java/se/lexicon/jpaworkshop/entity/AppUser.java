@@ -2,6 +2,8 @@ package se.lexicon.jpaworkshop.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -24,6 +26,9 @@ public class AppUser {
     @JoinColumn(name = "details_Id")
     private Details userDetails;
 
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    List<BookLoan> bookLoanList;
+
     public AppUser() {
     }
 
@@ -41,6 +46,19 @@ public class AppUser {
         this.regDate = regDate;
         this.userDetails = userDetails;
     }
+
+
+    public void addBookLoan(BookLoan bookLoan) {
+        if (bookLoan == null) throw new IllegalArgumentException("This is not an accepted parameter");
+        if (bookLoanList == null) {
+            bookLoanList = new ArrayList<>();
+            bookLoanList.add(bookLoan);
+            bookLoan.setBorrower(this);
+        }
+
+
+    }
+
 
     public int getAppUserId() {
         return appUserId;

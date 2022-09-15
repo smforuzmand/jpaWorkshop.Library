@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface AuthorDAO {
 
-    AuthorDAO findById(int authorId);
+    Author findById(int authorId);
 
     Collection<Author> findAll();
 

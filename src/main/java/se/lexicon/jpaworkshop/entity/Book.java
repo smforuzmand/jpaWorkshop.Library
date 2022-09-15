@@ -1,5 +1,7 @@
 package se.lexicon.jpaworkshop.entity;
 
+import net.bytebuddy.asm.Advice;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -23,6 +25,10 @@ public class Book {
     @ManyToMany
     private Set<Author> authors;
 
+ // todo: add to convinient method for adding and removing author into the list
+
+
+
     public Book() {
     }
 
@@ -37,6 +43,16 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public void addAuthor(Author author) {
+        authors.add(author);
+        author.getWrittenBooks().add(this);
+    }
+
+    public void removeAuthor(Author author) {
+        author.getWrittenBooks().remove(this);
+        authors.remove(author);
     }
 
     public Set<Author> getAuthors() {
