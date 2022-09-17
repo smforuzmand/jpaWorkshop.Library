@@ -2,10 +2,10 @@ package se.lexicon.jpaworkshop.data;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import se.lexicon.jpaworkshop.entity.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.awt.print.Book;
 import java.util.Collection;
 @Repository
 public class BookDAORepository implements BookDAO{

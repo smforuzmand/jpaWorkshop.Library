@@ -24,6 +24,16 @@ public class Author {
 
     // add two method add and remove
 
+    public void addBook(Book book) {
+        writtenBooks.add(book);
+        book.getAuthors().add(this);
+    }
+
+    public void removeBook(Book book) {
+        book.getAuthors().remove(this);
+        writtenBooks.remove(book);
+    }
+
 
     public Author(String firstName, String lastName, Set<Book> writtenBooks) {
         this.firstName = firstName;
@@ -35,19 +45,10 @@ public class Author {
 
     }
 
-
-    public void addBook(Book book) {
-        writtenBooks.add(book);
-        book.getAuthors().add(this);
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
-
-    public void removeBook(Book book) {
-        book.getAuthors().remove(this);
-        writtenBooks.remove(book);
-        }
-
-
-
 
     public int getAuthorId() {
         return authorId;

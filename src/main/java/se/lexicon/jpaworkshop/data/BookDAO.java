@@ -1,6 +1,7 @@
 package se.lexicon.jpaworkshop.data;
 
-import java.awt.print.Book;
+import se.lexicon.jpaworkshop.entity.Book;
+
 import java.util.Collection;
 
 public interface BookDAO {

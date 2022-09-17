@@ -28,6 +28,16 @@ public class Book {
  // todo: add to convinient method for adding and removing author into the list
 
 
+    public void addAuthor(Author author) {
+        authors.add(author);
+        author.getWrittenBooks().add(this);
+    }
+
+    public void removeAuthor(Author author) {
+        author.getWrittenBooks().remove(this);
+        authors.remove(author);
+    }
+
 
     public Book() {
     }
@@ -43,16 +53,6 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
-    }
-
-    public void addAuthor(Author author) {
-        authors.add(author);
-        author.getWrittenBooks().add(this);
-    }
-
-    public void removeAuthor(Author author) {
-        author.getWrittenBooks().remove(this);
-        authors.remove(author);
     }
 
     public Set<Author> getAuthors() {
