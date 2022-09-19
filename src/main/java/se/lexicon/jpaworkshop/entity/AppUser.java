@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static javax.persistence.CascadeType.*;
+
 
 @Entity
 public class AppUser {
@@ -26,18 +28,23 @@ public class AppUser {
     @JoinColumn(name = "details_Id")
     private Details userDetails;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    List<BookLoan> bookLoanList;
+    @OneToMany(
+               cascade = {CascadeType.DETACH, REFRESH,MERGE,PERSIST},
+               fetch = FetchType.LAZY,
+               mappedBy = "borrower")
+   private List<BookLoan> bookLoanList;
 
     public AppUser() {
     }
 
-    public AppUser(int appUserId, String userName, String password, LocalDate regDate, Details userDetails) {
+    public AppUser(int appUserId, String userName, String password,
+                   LocalDate regDate, Details userDetails, List<BookLoan> bookLoanList ) {
         this.appUserId = appUserId;
         this.userName = userName;
         this.password = password;
         this.regDate = regDate;
         this.userDetails = userDetails;
+        this.bookLoanList = bookLoanList;
     }
 
     public AppUser(String userName, String password, LocalDate regDate, Details userDetails) {
@@ -45,20 +52,31 @@ public class AppUser {
         this.password = password;
         this.regDate = regDate;
         this.userDetails = userDetails;
+        setBookLoanList(new ArrayList<>());
+
     }
 
 
     public void addBookLoan(BookLoan bookLoan) {
-        if (bookLoan == null) throw new IllegalArgumentException("This is not an accepted parameter");
-        if (bookLoanList == null) {
-            bookLoanList = new ArrayList<>();
-            bookLoanList.add(bookLoan);
+        if (bookLoan == null) throw new IllegalArgumentException("parameter bookLoan was null");
+        if (bookLoanList == null) bookLoanList = new ArrayList<>();
+
+
+        if (!bookLoanList.contains(bookLoan)){
             bookLoan.setBorrower(this);
+            bookLoanList.add(bookLoan);
         }
 
 
     }
 
+    public List<BookLoan> getBookLoanList() {
+        return bookLoanList;
+    }
+
+    public void setBookLoanList(List<BookLoan> bookLoanList) {
+        this.bookLoanList = bookLoanList;
+    }
 
     public int getAppUserId() {
         return appUserId;

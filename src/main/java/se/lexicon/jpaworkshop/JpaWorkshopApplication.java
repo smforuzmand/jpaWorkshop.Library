@@ -26,7 +26,6 @@ public class JpaWorkshopApplication {
     }
 
 
-
 }
 
 @Component
@@ -43,7 +42,7 @@ class MyCommandLineRunner implements CommandLineRunner {
 
     @Autowired
     public MyCommandLineRunner(DetailsDAO detailsDAO, AppUserDAO appUserDAO, AuthorDAO authorDAO
-                               ,EntityManager entityManager, BookDAO bookDAO, BookLoanDAO bookLoanDAO) {
+            , EntityManager entityManager, BookDAO bookDAO, BookLoanDAO bookLoanDAO) {
         this.detailsDAO = detailsDAO;
         this.appUserDAO = appUserDAO;
         this.entityManager = entityManager;
@@ -52,33 +51,51 @@ class MyCommandLineRunner implements CommandLineRunner {
         this.authorDAO = authorDAO;
     }
 
+
     @Override
     public void run(String... args) {
         System.out.println("This is our command line runner message");
         System.out.println(" --------------------This is a test of the JPA application-----------------------------");
 
+        Author author1 = new Author("author1Fn", "author1ln");
+
+        Set<Author> authors = new HashSet<>();
+        authors.add(author1);
+
+        Book book1 = new Book("123isbn", "book1Title", 15, authors);
+        author1 = authorDAO.create(author1);
         Details details1 = new Details("details1@email.com", "salomon", LocalDate.parse("1992-01-01"));
-        details1 = detailsDAO.create(details1);
 
         AppUser user1 = new AppUser("User1", "1234asd", LocalDate.parse("2022-01-18"), details1);
-        user1 = appUserDAO.create(user1);
 
-        Book book1 = new Book("123isbn","book1Title",15);
+
+        author1 = authorDAO.create(author1);
+
+
+        book1.addAuthor(author1);
+        author1.addBook(book1);
+        entityManager.persist(author1);
+
         book1 = bookDAO.create(book1);
 
-        Author author1 = new Author("author1Fn","author1ln");
-        author1 = authorDAO.create(author1);
-        author1.addBook(book1);
-        book1.addAuthor(author1);
-
+        book1.setAuthors(new HashSet<>());
         BookLoan bookLoan1 = new BookLoan(LocalDate.now(), LocalDate.now().plusDays(15), false, user1, book1);
         bookLoan1 = bookLoanDAO.create(bookLoan1);
-
-//TODO
-;
+        entityManager.persist(bookLoan1);
 
 
+        details1 = detailsDAO.create(details1);
+        entityManager.persist(details1);
 
+        user1 = appUserDAO.create(user1);
+        entityManager.persist(user1);
+        ;
+
+
+        entityManager.flush();
+
+
+        ;
 
 
     }

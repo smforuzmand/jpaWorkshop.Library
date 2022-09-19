@@ -3,6 +3,7 @@ package se.lexicon.jpaworkshop.entity;
 import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,7 +23,11 @@ public class Book {
     @Column(nullable = false)
     private int maxLoanDays;
 
-    @ManyToMany
+    @ManyToMany(
+            mappedBy = "writtenBooks",
+            cascade = {CascadeType.DETACH,CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
+
     private Set<Author> authors;
 
  // todo: add to convinient method for adding and removing author into the list
@@ -53,6 +58,13 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public Book(String isbn, String title, int maxLoanDays, Set<Author> authors) {
+        this.isbn = isbn;
+        this.title = title;
+        this.maxLoanDays = maxLoanDays;
+        setAuthors(new HashSet<>());
     }
 
     public Set<Author> getAuthors() {
@@ -100,12 +112,12 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return bookId == book.bookId && maxLoanDays == book.maxLoanDays && Objects.equals(isbn, book.isbn) && Objects.equals(title, book.title);
+        return getBookId() == book.getBookId() && getMaxLoanDays() == book.getMaxLoanDays() && getIsbn().equals(book.getIsbn()) && getTitle().equals(book.getTitle());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bookId, isbn, title, maxLoanDays);
+        return Objects.hash(getBookId(), getIsbn(), getTitle(), getMaxLoanDays());
     }
 
     @Override

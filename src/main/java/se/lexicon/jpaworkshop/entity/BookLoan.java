@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.REFRESH;
+
 @Entity
 public class BookLoan {
 
@@ -15,11 +18,11 @@ public class BookLoan {
     @Column(nullable = false)
     private boolean returned;
 
-   @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH},
+   @ManyToOne(cascade = {REFRESH, DETACH},
    fetch = FetchType.EAGER)
     private AppUser borrower;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH},
+    @ManyToOne(cascade = {REFRESH,DETACH},
     fetch = FetchType.EAGER)
     private Book book;
 
@@ -86,14 +89,13 @@ public class BookLoan {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookLoan bookLoan = (BookLoan) o;
-        return loanId == bookLoan.loanId && returned == bookLoan.returned && Objects.equals(loanDate, bookLoan.loanDate) && Objects.equals(dueDate, bookLoan.dueDate);
+        if (!(o instanceof BookLoan bookLoan)) return false;
+        return getLoanId() == bookLoan.getLoanId() && isReturned() == bookLoan.isReturned() && getLoanDate().equals(bookLoan.getLoanDate()) && getDueDate().equals(bookLoan.getDueDate()) && getBorrower().equals(bookLoan.getBorrower()) && getBook().equals(bookLoan.getBook());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loanId, loanDate, dueDate, returned);
+        return Objects.hash(getLoanId(), getLoanDate(), getDueDate(), isReturned(), getBorrower(), getBook());
     }
 
     @Override

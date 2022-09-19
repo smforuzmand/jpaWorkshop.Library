@@ -3,6 +3,7 @@ package se.lexicon.jpaworkshop.entity;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,20 +19,37 @@ public class Author {
     private String firstName;
     @Column(length = 255, nullable = false)
     private String lastName;
-    @ManyToMany(mappedBy = "authors" , cascade = CascadeType.ALL)
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
+    @JoinTable(name = "author_book",
+            joinColumns = @JoinColumn(name = "author_Id"),
+            inverseJoinColumns = @JoinColumn(name = "book_Id")
+    )
     private Set<Book> writtenBooks;
 
 
     // add two method add and remove
 
     public void addBook(Book book) {
-        writtenBooks.add(book);
-        book.getAuthors().add(this);
+        if (book == null) throw new IllegalArgumentException("Parameter Book is null");
+        if (writtenBooks == null) setWrittenBooks(new HashSet<>());
+
+
+        if (!writtenBooks.contains(book)){
+            book.getAuthors().add(this);
+            writtenBooks.add(book);
+        }
     }
 
     public void removeBook(Book book) {
-        book.getAuthors().remove(this);
-        writtenBooks.remove(book);
+        if (book == null) throw new IllegalArgumentException("Parameter Book is null");
+        if (writtenBooks == null) setWrittenBooks(new HashSet<>());
+
+        if (writtenBooks.contains(book)){
+            book.getAuthors().remove(this);
+            writtenBooks.remove(book);
+        }
     }
 
 
@@ -48,6 +66,7 @@ public class Author {
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        setWrittenBooks(new HashSet<>());
     }
 
     public int getAuthorId() {
@@ -79,21 +98,24 @@ public class Author {
     }
 
     public void setWrittenBooks(Set<Book> writtenBooks) {
-        this.writtenBooks = writtenBooks;
+        this.writtenBooks = new HashSet<>();
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Author author = (Author) o;
-        return authorId == author.authorId && Objects.equals(firstName, author.firstName) && Objects.equals(lastName, author.lastName);
+        return getAuthorId() == author.getAuthorId() && Objects.equals(getFirstName(), author.getFirstName()) && Objects.equals(getLastName(), author.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authorId, firstName, lastName);
+        return Objects.hash(getAuthorId(), getFirstName(), getLastName());
     }
+
+
 
     @Override
     public String toString() {

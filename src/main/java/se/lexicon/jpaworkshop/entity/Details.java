@@ -20,9 +20,6 @@ public class Details {
 
     @Column(nullable = false)
     private LocalDate birthDate;
-//
-//    @OneToOne()
-//    private AppUser appUser;
 
 
     public Details(int detailsId, String email, String name, LocalDate birthDate) {
@@ -76,14 +73,13 @@ public class Details {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Details details = (Details) o;
-        return detailsId == details.detailsId && Objects.equals(email, details.email) && Objects.equals(name, details.name) && Objects.equals(birthDate, details.birthDate);
+        if (!(o instanceof Details details)) return false;
+        return getDetailsId() == details.getDetailsId() && getEmail().equals(details.getEmail()) && getName().equals(details.getName()) && getBirthDate().equals(details.getBirthDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(detailsId, email, name, birthDate);
+        return Objects.hash(getDetailsId(), getEmail(), getName(), getBirthDate());
     }
 
     @Override
