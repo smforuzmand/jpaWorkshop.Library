@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
+import se.lexicon.jpaworkshop.data.dao.AuthorDAO;
+import se.lexicon.jpaworkshop.data.dao.AuthorDAORepository;
 import se.lexicon.jpaworkshop.entity.Author;
 import se.lexicon.jpaworkshop.entity.Book;
 

@@ -1,4 +1,4 @@
-package se.lexicon.jpaworkshop.data;
+package se.lexicon.jpaworkshop.data.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

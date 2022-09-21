@@ -1,4 +1,4 @@
-package se.lexicon.jpaworkshop.data;
+package se.lexicon.jpaworkshop.data.dao;
 
 import se.lexicon.jpaworkshop.entity.Details;
 
